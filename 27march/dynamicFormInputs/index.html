@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+   const reactRoot = ReactDOM.createRoot(document.getElementById('root'));
+   let hobbyData = [];
+   function HobbyForm() {
+  const [hobbies, setHobbies] = React.useState(['']);
+  
+
+  const handleAddHobby = () => {
+    setHobbies([...hobbies, '']);
+  };
+
+  const handleRemoveHobby = (index) => {
+    const newHobbies = [...hobbies];
+    newHobbies.splice(index, 1);
+    setHobbies(newHobbies);
+  };
+
+  const handleInputChange = (index, event) => {
+    const newHobbies = [...hobbies];
+    newHobbies[index] = event.target.value;
+    setHobbies(newHobbies);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(hobbies);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {hobbies.map((hobby, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            value={hobby}
+            onChange={(event) => handleInputChange(index, event)}
+          />
+          {index !== 0 && (
+            <button type="button" onClick={() => handleRemoveHobby(index)}>
+              Remove Hobby
+            </button>
+          )}
+        </div>
+      ))}
+      <button type="button" onClick={handleAddHobby}>
+        Add Hobby
+      </button>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+    // function Comp(){
+        
+    //     const [data, setData] = React.useState([]);
+    //     // const [hobby, hobbyData] = React.useState([]);
+
+    //     function changeHandler(e){
+    //       e.preventDefault();
+    //       const {hobby} = e.target.elements;
+    //       hobbyData.push(hobby.value);
+
+    //       setData([...data, event.target[0].value]);
+    //       console.log(data,hobbyData,'hobby');
+
+    //     }
+
+    //     return  (
+    //         <>  
+    //             <form onSubmit = { () => changeHandler(event)}>
+    //                 <input type="text" id="hobby"/>
+    //               <button type = "submit"> Add</button>
+    //             </form>
+    //             <div>
+    //               <ul>
+    //                 {data.map((el) => {
+    //                     <li>
+    //                       {el}
+    //                       <button>Remove</button>
+    //                     </li>
+    //                 })}
+    //               </ul>
+    //             </div>
+    //         </> 
+    //     );  
+    // }
+    reactRoot.render(<HobbyForm />)
+  </script>
+</html>

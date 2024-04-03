@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+        const reactRoot = ReactDOM.createRoot(document.getElementById('root'));
+        function Comp(){
+          const [todo, setTodo] = React.useState([]);
+          const[inputValue, setInputValue] = React.useState('');
+          
+          const [filter, setFilter] = React.useState('all');
+
+          function changeHandler(e){
+            setInputValue(e.target.value);
+          }
+          function addTodoHandler(e){
+            console.log('dsankajsdfa');
+            e.preventDefault();
+            setTodo([...todo, {task : inputValue, status : "active"}]);
+            setInputValue('');
+          }
+          function deleteHandler(index){
+
+            const newTodos = [...todo];
+            newTodos.splice(index, 1);
+            setTodo(newTodos);
+          }
+          function editHandler(index){
+              const newTodos = [...todo];
+              newTodos[index].status = "completed";
+              setTodo(newTodos);
+          }
+                const filteredTodos = filter === 'all' ? todo :
+                      filter === 'active' ? todo.filter(el => el.status == "active") :
+                      filter === 'completed' ? todo.filter(el => el.status == "completed") :
+                      [];   
+
+                      console.log(filteredTodos, todo,'filtered');
+
+          return <>
+                    <form onSubmit={addTodoHandler}>
+                    <input type="text" name="task" value = {inputValue} onChange = {changeHandler}/>
+                    <input type="submit" />
+                    </form>
+                    <div className="filters">
+                          <button onClick={() => setFilter('all')}>All</button>
+                          <button onClick={() => setFilter('active')}>Active</button>
+                          <button onClick={() => setFilter('completed')}>Completed</button>
+                    </div>
+                    <ul style = {{listStyle : "none"}}>
+                        {filteredTodos.map((el,i) => (
+                          <li key={i}>{el.task}
+                            <button onClick = {() => editHandler(i)}>{el.status}</button>
+                            <button onClick = {() => deleteHandler(i)} >Delete</button>
+                          </li>
+                        ))}
+                    </ul>
+                  </>    
+        }
+        reactRoot.render(<Comp/>);
+  </script>
+</html>
